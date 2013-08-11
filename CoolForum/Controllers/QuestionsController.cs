@@ -24,7 +24,8 @@ namespace CoolForum.Controllers
             return questions;
         }
 
-        public HttpResponseMessage PostQuestion(Question question)
+        [HttpPost]
+        public HttpResponseMessage PostQuestion([FromBody]Question question)
         {
             question.PostTime = DateTime.Now;
             entities.Questions.Add(question);
