@@ -33,6 +33,11 @@ namespace CoolForum.Controllers
             return Request.CreateResponse(HttpStatusCode.Created, "Question created.");
         }
 
+        public string Test()
+        {
+            return "hahaaa";
+        }
+
         protected override void Dispose(bool disposing)
         {
             entities.Dispose();
