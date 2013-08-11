@@ -30,7 +30,7 @@ namespace CoolForum.Controllers
             entities.Questions.Add(question);
             entities.SaveChanges();
 
-            return Request.CreateResponse(HttpStatusCode.Created);
+            return Request.CreateResponse(HttpStatusCode.Created, "Question created.");
         }
 
         protected override void Dispose(bool disposing)
