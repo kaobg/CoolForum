@@ -33,6 +33,8 @@ namespace CoolForum.Controllers
             return Request.CreateResponse(HttpStatusCode.Created, "Question created.");
         }
 
+        [HttpGet]
+        [ActionName("test")]
         public string Test()
         {
             return "hahaaa";
