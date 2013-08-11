@@ -10,7 +10,6 @@ using System.Web.Http.Cors;
 
 namespace CoolForum.Controllers
 {
-    [EnableCors("*", "*", "*")]
     public class QuestionsController : ApiController
     {
         private ForumContext entities = new ForumContext();
