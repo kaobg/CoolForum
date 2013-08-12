@@ -10,6 +10,11 @@ namespace CoolForum.Models
 
     public class User : UserBaseModel
     {
+        public User()
+        {
+            this.Questions = new HashSet<Question>();
+        }
+
         public int Id { get; set; }
         public string SessionKey { get; set; }
         public string AuthCode { get; set; }
