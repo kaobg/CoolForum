@@ -25,7 +25,6 @@ namespace CoolForum.Controllers
                 .Select(q => new QuestionModel()
                 {
                     Title = q.Title,
-                    Content = q.Content,
                     Author = q.Author.UserName,
                     PostTime = q.PostTime
                 })
@@ -42,7 +41,6 @@ namespace CoolForum.Controllers
             Question question = new Question()
             {
                 Title = questionModel.Title,
-                Content = questionModel.Content,
                 PostTime = DateTime.Now
             };
 
