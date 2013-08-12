@@ -26,7 +26,8 @@ namespace CoolForum.Controllers
                 {
                     Title = q.Title,
                     Author = q.Author.UserName,
-                    PostTime = q.PostTime
+                    PostTime = q.PostTime,
+                    Category = q.Category
                 })
                 .Take(10)
                 .ToList();
@@ -35,13 +36,15 @@ namespace CoolForum.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage PostQuestion(string sessionKey, [FromBody]QuestionModel questionModel)
+        public HttpResponseMessage PostQuestion(string sessionKey, [FromBody]Question questionModel)
         {
             var user = UserDataPersister.LoginUser(sessionKey);
             Question question = new Question()
             {
                 Title = questionModel.Title,
-                PostTime = DateTime.Now
+                PostTime = DateTime.Now,
+                Content = questionModel.Content,
+                Category = questionModel.Category
             };
 
             entities.Users.Attach(user);

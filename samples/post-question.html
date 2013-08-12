@@ -10,9 +10,16 @@
 	<label for='password'>Password: </label>
 	<input type='password' id='password'/>
 	<input type='button' id='login' value='Log in'/> <br/>
-	<input type='text' value='test' id='questionContent'/>
+	<label for='questionTitle'>Title: </label>
+	<input type='text' value='test' id='questionTitle'/>
 	<input type='button' id='postQuestion' value='Post question'/>
-
+	<label for='categorySelect'>Category: </label>
+	<select id='categorySelect'>
+		<option value='1'>HTML5</option>
+		<option value='2'>JavaScript</option>
+		<option value='3'>Java</option>
+		<option value='4'>C#</option>
+	</select>
 	<script>
 		var sessionKey;
 
@@ -44,8 +51,10 @@
 			}
 
 			var postModel = {};
-			postModel.title = 'Test title';
-			postModel.content = $("#questionContent").val();
+			postModel.title = $("#questionTitle").val();
+			postModel.content = 'test content';
+			postModel.category = $("#categorySelect").val();
+			debugger;
 
 			$.ajax({
 				url: 'http://localhost:3650/api/questions/post/' + sessionKey,
