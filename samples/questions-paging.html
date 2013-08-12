@@ -18,7 +18,7 @@
 					var list = $("#questionsList");
 					data.forEach(function(question) {
 						var li = $("<li></li>");
-						li.html("Content: " + question.Content + ", TimeStamp: " + question.PostTime);
+						li.html("Content: " + question.Content + ", Author: " + question.Author +  ", TimeStamp: " + question.PostTime);
 						list.append(li);
 					});
 				},

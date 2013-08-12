@@ -23,7 +23,7 @@
 				contentType: 'application/json',
 				data: JSON.stringify(registerModel),
 				success: function(data) {
-					alert('Registration successful. Session key: ' + data);
+					alert('Registration successful. Session key: ' + data.SessionKey);
 					// save session key
 				},
 				fail: function(error) {
