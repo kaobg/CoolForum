@@ -1,0 +1,65 @@
+<html>
+<head>
+	<title>Post test</title>
+	<script src='scripts/sha1.js'></script>
+	<script src='scripts/jquery-latest.min.js'></script>
+</head>
+<body>
+	<label for='username'>Username: </label>
+	<input type='text' id='username'/>
+	<label for='password'>Password: </label>
+	<input type='password' id='password'/>
+	<input type='button' id='login' value='Log in'/> <br/>
+	<input type='text' value='test' id='questionContent'/>
+	<input type='button' id='postQuestion' value='Post question'/>
+
+	<script>
+		var sessionKey;
+
+		$("#login").on('click', function() {
+			var logInModel = {};
+			logInModel.userName = $("#username").val();
+			logInModel.authCode = CryptoJS.SHA1(logInModel.userName + $("#password").val()).toString();
+
+			$.ajax({
+				url: 'http://localhost:3650/api/users/login',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(logInModel),
+				success: function(data) {
+					alert('Log in succeeded. Session key: ' + data.SessionKey);
+					sessionKey = data.SessionKey;
+				},
+				fail: function(error) {
+					alert(error);
+				}
+			});
+		});
+
+		$("#postQuestion").on('click', function() {
+
+			if (!sessionKey) {
+				alert("no session key");
+				return;
+			}
+
+			var postModel = {};
+			postModel.title = 'Test title';
+			postModel.content = $("#questionContent").val();
+
+			$.ajax({
+				url: 'http://localhost:3650/api/questions/post/' + sessionKey,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(postModel),
+				success: function(data) {
+					alert(data);
+				},
+				fail: function(error) {
+					alert(error);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

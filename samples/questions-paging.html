@@ -1,0 +1,33 @@
+<html>
+<head>
+	<script src='scripts/jquery-latest.min.js'></script>
+	<title>Paging</title>
+</head>
+<body>
+
+	<ul id='questionsList'></ul>
+	<input type='button' value='Get questions' id='loadQuestions'/>
+	<script>
+		var page = 1;
+
+		$("#loadQuestions").on('click', function() {
+			$.ajax({
+				url: 'http://localhost:3650/api/questions/page/' + page++,
+				type: 'GET',
+				success: function(data) {
+					var list = $("#questionsList");
+					data.forEach(function(question) {
+						var li = $("<li></li>");
+						li.html("Content: " + question.Content + ", TimeStamp: " + question.PostTime);
+						list.append(li);
+					});
+				},
+				fail: function(error) {
+					alert(error);
+				}
+			})
+		});
+
+	</script>
+</body>
+</html>

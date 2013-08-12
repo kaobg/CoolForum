@@ -11,4 +11,10 @@ namespace CoolForum.Models
         public DateTime PostTime { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
     }
+
+    public class QuestionModel
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+    }
 }

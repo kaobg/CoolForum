@@ -1,5 +1,6 @@
 ﻿using CoolForum.Data;
 using CoolForum.Models;
+using CoolForum.Persisters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace CoolForum.Controllers
     {
         private ForumContext entities = new ForumContext();
 
-        public ICollection<Question> GetQuestions(int page)
+        [HttpGet]
+        public IEnumerable<Question> GetQuestionsByPage(int page)
         {
             var questions = entities.Questions
                 .OrderByDescending(p => p.PostTime)
@@ -26,10 +28,18 @@ namespace CoolForum.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage PostQuestion([FromBody]Question question)
+        public HttpResponseMessage PostQuestion(string sessionKey, [FromBody]QuestionModel questionModel)
         {
-            question.PostTime = DateTime.Now;
-            entities.Questions.Add(question);
+            var user = UserDataPersister.LoginUser(sessionKey);
+            Question question = new Question()
+            {
+                Title = questionModel.Title,
+                Content = questionModel.Content,
+                PostTime = DateTime.Now
+            };
+
+            entities.Users.Attach(user);
+            user.Questions.Add(question);
             entities.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Created, "Question created.");

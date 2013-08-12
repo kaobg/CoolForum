@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>User register test</title>
+	<script src='scripts/sha1.js'></script>
+	<script src='scripts/jquery-latest.min.js'></script>
+</head>
+<body>
+	<label for='username'>Username: </label>
+	<input type='text' id='username'/>
+	<label for='pass'>Password: </label>
+	<input type='password' id='password'/>
+	<input type='button' value='Register' id='register'/>
+
+	<script>
+		$("#register").on('click', function() {
+			var registerModel = {};
+			registerModel.userName = $("#username").val();
+			registerModel.authCode = CryptoJS.SHA1(registerModel.userName + $("#password").val()).toString();
+
+			$.ajax({
+				url: 'http://localhost:3650/api/users/register',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(registerModel),
+				success: function(data) {
+					alert('Registration successful. Session key: ' + data);
+					// save session key
+				},
+				fail: function(error) {
+					alert(error);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

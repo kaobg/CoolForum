@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>Log in test</title>
+	<script src='scripts/sha1.js'></script>
+	<script src='scripts/jquery-latest.min.js'></script>
+</head>
+<body>
+	<label for='username'>Username: </label>
+	<input type='text' id='username'/>
+	<label for='password'>Password: </label>
+	<input type='password' id='password'/>
+	<input type='button' id='login' value='Log in'/>
+
+	<script>
+		$("#login").on('click', function() {
+			var logInModel = {};
+			logInModel.userName = $("#username").val();
+			logInModel.authCode = CryptoJS.SHA1(logInModel.userName + $("#password").val()).toString();
+
+			$.ajax({
+				url: 'http://localhost:3650/api/users/login',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(logInModel),
+				success: function(data) {
+					alert('Log in succeeded. Session key: ' + data.SessionKey);
+					// save session key
+				},
+				fail: function(error) {
+					alert(error);
+				}
+			})
+		});
+	</script>
+</body>
+</html>
