@@ -16,23 +16,40 @@ namespace CoolForum.Controllers
         private ForumContext entities = new ForumContext();
 
         [HttpGet]
-        public IEnumerable<QuestionModel> GetQuestionsByPage(int page)
+        public IEnumerable<QuestionBasicViewModel> GetQuestionsByPage(int page)
         {
             var questions = entities.Questions
                 .Include("Author")
                 .OrderByDescending(p => p.PostTime)
                 .Skip((page - 1) * 10)
-                .Select(q => new QuestionModel()
+                .Select(q => new QuestionBasicViewModel()
                 {
                     Title = q.Title,
                     Author = q.Author.UserName,
                     PostTime = q.PostTime,
-                    Category = q.Category
+                    Category = q.Category,
                 })
                 .Take(10)
                 .ToList();
 
             return questions;
+        }
+
+        public QuestionFullViewModel GetQuestionById(int id)
+        {
+            var question = entities.Questions.Find(id);
+            var vm = new QuestionFullViewModel()
+            {
+                Id = question.Id,
+                Title = question.Title,
+                Author = question.Author.UserName,
+                Category = question.Category,
+                Content = question.Content,
+                PostTime = question.PostTime,
+                Answers = question.Answers
+            };
+
+            return vm;
         }
 
         [HttpPost]
