@@ -11,15 +11,15 @@ namespace CoolForum
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
-                name: "Answers Api",
-                routeTemplate: "api/questions/{questionId}/{action}/{sessionKey}",
-                defaults: new { controller = "questions", sessionKey = RouteParameter.Optional }
-            );
-
-            config.Routes.MapHttpRoute(
                 name: "QuestionsPagingApi",
                 routeTemplate: "api/questions/page/{page}",
                 defaults: new { controller = "questions", action = "GetQuestionsByPage" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Answers Api",
+                routeTemplate: "api/questions/{questionId}/{action}/{sessionKey}",
+                defaults: new { controller = "questions", sessionKey = RouteParameter.Optional }
             );
 
             config.Routes.MapHttpRoute(
