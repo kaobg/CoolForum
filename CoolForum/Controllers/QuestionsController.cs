@@ -24,6 +24,7 @@ namespace CoolForum.Controllers
                 .Skip((page - 1) * 10)
                 .Select(q => new QuestionBasicViewModel()
                 {
+                    Id = q.Id,
                     Title = q.Title,
                     Author = q.Author.UserName,
                     PostTime = q.PostTime,
@@ -37,7 +38,8 @@ namespace CoolForum.Controllers
 
         public QuestionFullViewModel GetQuestionById(int id)
         {
-            var question = entities.Questions.Find(id);
+            var question = entities.Questions.Include("Answers").FirstOrDefault(q => q.Id == id);
+
             var vm = new QuestionFullViewModel()
             {
                 Id = question.Id,
@@ -46,14 +48,21 @@ namespace CoolForum.Controllers
                 Category = question.Category,
                 Content = question.Content,
                 PostTime = question.PostTime,
-                Answers = question.Answers
+                Answers = question.Answers.Select(a => new AnswerModel()
+                {
+                    Id = a.Id,
+                    Author = a.User.UserName,
+                    Content = a.Content,
+                    PostTime = a.PostTime,
+                })
             };
 
             return vm;
         }
 
         [HttpPost]
-        public HttpResponseMessage PostQuestion(string sessionKey, [FromBody]Question questionModel)
+        [ActionName("post")]
+        public HttpResponseMessage PostQuestion([FromUri]string sessionKey, [FromBody]Question questionModel)
         {
             var user = UserDataPersister.LoginUser(sessionKey);
             Question question = new Question()
@@ -69,6 +78,25 @@ namespace CoolForum.Controllers
             entities.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Created, "Question created.");
+        }
+
+        [HttpPost]
+        [ActionName("answer")]
+        public HttpResponseMessage PostAnswer([FromUri]int questionId, [FromUri]string sessionKey, [FromBody]Answer answerModel)
+        {
+            var user = UserDataPersister.LoginUser(sessionKey);
+            var answer = new Answer()
+            {
+                Content = answerModel.Content,
+                PostTime = DateTime.Now,
+                QuestionId = questionId,
+            };
+
+            entities.Users.Attach(user);
+            user.Answers.Add(answer);
+            entities.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.Created, "Answer added.");
         }
 
         protected override void Dispose(bool disposing)

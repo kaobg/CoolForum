@@ -11,6 +11,12 @@ namespace CoolForum
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
+                name: "Answers Api",
+                routeTemplate: "api/questions/{questionId}/{action}/{sessionKey}",
+                defaults: new { controller = "questions", sessionKey = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "QuestionsPagingApi",
                 routeTemplate: "api/questions/page/{page}",
                 defaults: new { controller = "questions", action = "GetQuestionsByPage" }
@@ -18,8 +24,8 @@ namespace CoolForum
 
             config.Routes.MapHttpRoute(
                 name: "QuestionsApi",
-                routeTemplate: "api/questions/post/{sessionKey}",
-                defaults: new { controller = "questions", action="PostQuestion" }
+                routeTemplate: "api/questions/{action}/{sessionKey}",
+                defaults: new { controller = "questions" }
             );
 
             config.Routes.MapHttpRoute(

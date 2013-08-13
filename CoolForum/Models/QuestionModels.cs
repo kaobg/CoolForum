@@ -5,6 +5,7 @@ namespace CoolForum.Models
 {
     public class QuestionBasicViewModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public DateTime PostTime { get; set; }
@@ -18,7 +19,7 @@ namespace CoolForum.Models
         public string Content { get; set; }
         public DateTime PostTime { get; set; }
         public string Author { get; set; }
-        public ICollection<Answer> Answers { get; set; }
+        public IEnumerable<AnswerModel> Answers { get; set; }
         public Category Category { get; set; }
     }
 }
